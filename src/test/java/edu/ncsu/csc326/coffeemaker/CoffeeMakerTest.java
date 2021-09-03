@@ -137,6 +137,7 @@ public class CoffeeMakerTest {
     // Add a Recipe
 
     /**
+     * Test Case ID: 1
      * Given a coffee maker with valid recipes
      * When we add the recipe,
      * Then we get the information of the recipe.
@@ -149,6 +150,7 @@ public class CoffeeMakerTest {
     }
 
     /**
+     * Test Case ID: 2
      * Given a coffee maker with three valid recipes
      * When we add three recipes already,
      * Then we can't add more than three recipes.
@@ -162,6 +164,7 @@ public class CoffeeMakerTest {
     }
 
     /**
+     * Test Case ID: 3
      * Given a coffee maker with one valid recipe
      * When we set the name of the recipe,
      * Then we can't enter a duplicate name with an existing one.
@@ -175,6 +178,7 @@ public class CoffeeMakerTest {
     }
 
     /**
+     * Test Case ID: 4
      * Given a recipe with the price
      * When we set the price to the recipe,
      * Then we can't set the price with the string.
@@ -192,6 +196,7 @@ public class CoffeeMakerTest {
     // Delete a Recipe
 
     /**
+     * Test Case ID: 5
      * Given a coffee maker with valid recipes
      * When we delete the recipe with the index of that recipe,
      * Then we get the name of the recipe that we deleted.
@@ -207,6 +212,7 @@ public class CoffeeMakerTest {
     }
 
     /**
+     * Test Case ID: 6
      * Given a coffee maker with one valid recipe
      * When we delete the recipe with the wrong index of that recipe, it cannot be deleted
      * Then we get null.
@@ -220,6 +226,7 @@ public class CoffeeMakerTest {
     // Edit a Recipe
 
     /**
+     * Test Case ID: 7
      * Given a coffee maker with valid recipes
      * When we edit the recipe with the index of that recipe, and create new recipe to store new information instead
      * Then we get the name of the recipe that we edited.
@@ -251,6 +258,7 @@ public class CoffeeMakerTest {
     }
 
     /**
+     * Test Case ID: 8
      * Given a coffee maker with one valid recipe
      * When we edit the recipe with the index of that recipe, and create new recipe to store new information instead
      * Then we can't change the name of the recipe.
@@ -269,6 +277,7 @@ public class CoffeeMakerTest {
     // Add Inventory
 
     /**
+     * Test Case ID: 9
      * Given a coffee maker with the amount of coffee
      * When we add the amount of coffee to the inventory,
      * Then we can add amount of coffee.
@@ -281,6 +290,7 @@ public class CoffeeMakerTest {
     }
 
     /**
+     * Test Case ID: 10
      * Given a coffee maker with the amount of milk
      * When we add the amount of milk to the inventory,
      * Then we can add amount of milk.
@@ -293,6 +303,7 @@ public class CoffeeMakerTest {
     }
 
     /**
+     * Test Case ID: 11
      * Given a coffee maker with the amount of sugar
      * When we add the amount of sugar to the inventory,
      * Then we can add amount of sugar.
@@ -305,6 +316,7 @@ public class CoffeeMakerTest {
     }
 
     /**
+     * Test Case ID: 12
      * Given a coffee maker with the amount of chocolate
      * When we add the amount of chocolate to the inventory,
      * Then we can add amount of chocolate.
@@ -317,6 +329,7 @@ public class CoffeeMakerTest {
     }
 
     /**
+     * Test Case ID: 13
      * Given a coffee maker with the amount of ingredients
      * When we add the amount of ingredients with negative integer to the inventory,
      * Then we can't add amount of ingredients.
@@ -332,6 +345,7 @@ public class CoffeeMakerTest {
     // Check Inventory
 
     /**
+     * Test Case ID: 14
      * Given a coffee maker with the amount of ingredients
      * When we add the amount of ingredients to the inventory,
      * Then we get updated amount of ingredients.
@@ -348,6 +362,7 @@ public class CoffeeMakerTest {
     // Purchase Beverage
 
     /**
+     * Test Case ID: 15
      * Given a coffee maker with valid recipes
      * When we purchase, the amount we pay will be calculated against the price
      * Then we get correct change and ingredients are reduced to make coffee according to the selected recipe.
@@ -357,10 +372,11 @@ public class CoffeeMakerTest {
         coffeeMaker.addRecipe(recipe1);
         coffeeMaker.addRecipe(recipe3);
         assertEquals(10, coffeeMaker.makeCoffee(0, 60));
-        assertNotEquals(0, coffeeMaker.makeCoffee(2, 200));
+        assertNotEquals(0, coffeeMaker.makeCoffee(1, 200));
     }
 
     /**
+     * Test Case ID: 16
      * Given a coffee maker with valid recipes
      * When we make coffee with the selected recipe,
      * Then we get the details of the inventory with ingredients are reduced from being used to make coffee.
@@ -373,5 +389,45 @@ public class CoffeeMakerTest {
         coffeeMaker.makeCoffee(2, 160);
         String detailsInventory = "Coffee: 12\nMilk: 12\nSugar: 14\nChocolate: 15\n";
         assertEquals(detailsInventory, coffeeMaker.checkInventory());
+    }
+
+    /**
+     * Test Case ID: 17
+     * Given a coffee maker with valid recipes
+     * When we make coffee, but the ingredients are not enough,
+     * Then we get the change equal to the money we paid.
+     */
+    @Test
+    public void testMakeCoffeeWhenIngredientsNotEnough() {
+        coffeeMaker.addRecipe(recipe1);
+        coffeeMaker.addRecipe(recipe2);
+        coffeeMaker.addRecipe(recipe3);
+        assertEquals(75, coffeeMaker.makeCoffee(1, 75));
+    }
+
+    /**
+     * Test Case ID: 18
+     * Given a coffee maker with valid recipes
+     * When we make coffee, but the recipe that we selected is not in the system,
+     * Then we get the change equal to the money we paid.
+     */
+    @Test
+    public void testMakeCoffeeWhenRecipeIsNull() {
+        coffeeMaker.addRecipe(recipe1);
+        coffeeMaker.addRecipe(recipe2);
+        assertEquals(100, coffeeMaker.makeCoffee(2, 100));
+    }
+
+    /**
+     * Test Case ID: 19
+     * Given a coffee maker with valid recipes
+     * When we make coffee with not enough money for the price,
+     * Then we get the change equal to the money we paid.
+     */
+    @Test
+    public void testPurchasedBeverageWithNotEnoughMoney() {
+        coffeeMaker.addRecipe(recipe1);
+        coffeeMaker.addRecipe(recipe2);
+        assertEquals(40, coffeeMaker.makeCoffee(0, 40));
     }
 }
