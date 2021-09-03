@@ -81,7 +81,7 @@ public class InventoryTest {
      * Test Case ID: 21
      * Given an inventory with a valid amount of chocolate
      * When we set the amount of the chocolate with negative number,
-     * Then we can't set the amount of chocolate and get the default of amount of chocolate.
+     * Then we can't set the amount of chocolate and get the default amount of chocolate.
      */
     @Test
     public void testSetChocolateWithNegativeInteger() {
@@ -144,7 +144,7 @@ public class InventoryTest {
      * Test Case ID: 26
      * Given an inventory with a valid amount of sugar
      * When we set the amount of the sugar with negative number,
-     * Then we can't set the amount of sugar and get the default of amount of sugar.
+     * Then we can't set the amount of sugar and get the default amount of sugar.
      */
     @Test
     public void testSetSugarWithNegativeInteger() {
@@ -207,7 +207,7 @@ public class InventoryTest {
      * Test Case ID: 31
      * Given an inventory with a valid amount of coffee
      * When we set the amount of the coffee with negative number,
-     * Then we can't set the amount of coffee and get the default of amount of coffee.
+     * Then we can't set the amount of coffee and get the default amount of coffee.
      */
     @Test
     public void testSetCoffeeWithNegativeInteger() {
@@ -270,7 +270,7 @@ public class InventoryTest {
      * Test Case ID: 36
      * Given an inventory with a valid amount of milk
      * When we set the amount of the milk with negative number,
-     * Then we can't set the amount of milk and get the default of amount of milk.
+     * Then we can't set the amount of milk and get the default amount of milk.
      */
     @Test
     public void testSetMilkWithNegativeInteger() {
