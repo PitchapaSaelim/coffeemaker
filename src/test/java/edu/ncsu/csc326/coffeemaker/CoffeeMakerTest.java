@@ -180,7 +180,7 @@ public class CoffeeMakerTest {
     /**
      * Test Case ID: 4
      * Given a recipe with the price
-     * When we set the price to the recipe,
+     * When we set the price to the recipe with the string,
      * Then we can't set the price with the string.
      *
      * @throws RecipeException if there was an error parsing the price to a positive integer.
