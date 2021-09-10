@@ -28,6 +28,8 @@ import org.junit.Test;
 import edu.ncsu.csc326.coffeemaker.exceptions.InventoryException;
 import edu.ncsu.csc326.coffeemaker.exceptions.RecipeException;
 
+import static org.mockito.Mockito.*;
+
 /**
  * Unit tests for CoffeeMaker class.
  *
@@ -39,12 +41,16 @@ public class CoffeeMakerTest {
      * The object under test.
      */
     private CoffeeMaker coffeeMaker;
+    private CoffeeMaker coffeeMaker2;
+    private RecipeBook mockRecipeBook;
 
     // Sample recipes to use in testing.
     private Recipe recipe1;
     private Recipe recipe2;
     private Recipe recipe3;
     private Recipe recipe4;
+
+    private Recipe[] recipes;
 
     /**
      * Initializes some recipes to test with and the {@link CoffeeMaker}
@@ -56,6 +62,10 @@ public class CoffeeMakerTest {
     @Before
     public void setUp() throws RecipeException {
         coffeeMaker = new CoffeeMaker();
+
+        mockRecipeBook = mock(RecipeBook.class);
+
+        coffeeMaker2 = new CoffeeMaker(mockRecipeBook, new Inventory());
 
         //Set up for r1
         recipe1 = new Recipe();
@@ -92,6 +102,9 @@ public class CoffeeMakerTest {
         recipe4.setAmtMilk("1");
         recipe4.setAmtSugar("1");
         recipe4.setPrice("65");
+
+        //Create a list of recipes
+        recipes = new Recipe[]{recipe1, recipe2, recipe3, recipe4};
     }
 
 
@@ -429,5 +442,81 @@ public class CoffeeMakerTest {
         coffeeMaker.addRecipe(recipe1);
         coffeeMaker.addRecipe(recipe2);
         assertEquals(40, coffeeMaker.makeCoffee(0, 40));
+    }
+
+    // Test With Mock Object
+
+    /**
+     * Test Case ID: 44
+     * Given a coffee maker with valid recipes by using mock object
+     * When we purchase, the amount we pay will be calculated against the price
+     * Then we get correct change and ingredients are reduced to make coffee according to the selected recipe,
+     * and getRecipes() will be invoked at least 1 time.
+     */
+    @Test
+    public void testBeverageCanPurchasedWithMockObject() {
+        when(mockRecipeBook.getRecipes()).thenReturn(recipes);
+        assertEquals(10, coffeeMaker2.makeCoffee(0, 60));
+        assertNotEquals(0, coffeeMaker2.makeCoffee(1, 200));
+        verify(mockRecipeBook, atLeastOnce()).getRecipes();
+    }
+
+    /**
+     * Test Case ID: 45
+     * Given a coffee maker with valid recipes by using mock object
+     * When we make coffee with the selected recipe,
+     * Then we get the details of the inventory with ingredients are reduced from being used to make coffee,
+     * and getRecipes() will be invoked at least 1 time.
+     */
+    @Test
+    public void testInventoryUpdatedWhenPurchasedWithMockObject() {
+        when(mockRecipeBook.getRecipes()).thenReturn(recipes);
+        coffeeMaker2.makeCoffee(2, 160);
+        String detailsInventory = "Coffee: 12\nMilk: 12\nSugar: 14\nChocolate: 15\n";
+        assertEquals(detailsInventory, coffeeMaker2.checkInventory());
+        verify(mockRecipeBook, atLeastOnce()).getRecipes();
+    }
+
+    /**
+     * Test Case ID: 46
+     * Given a coffee maker with valid recipes by using mock object
+     * When we make coffee, but the ingredients are not enough,
+     * Then we get the change equal to the money we paid,
+     * and getRecipes() will be invoked at least 1 time.
+     */
+    @Test
+    public void testMakeCoffeeWhenIngredientsNotEnoughWithMockObject() {
+        when(mockRecipeBook.getRecipes()).thenReturn(recipes);
+        assertEquals(75, coffeeMaker2.makeCoffee(1, 75));
+        verify(mockRecipeBook, atLeastOnce()).getRecipes();
+    }
+
+    /**
+     * Test Case ID: 47
+     * Given a coffee maker with valid recipes by using mock object
+     * When we make coffee, but the recipe that we selected is not in the system,
+     * Then we get the change equal to the money we paid,
+     * and getRecipes() will be invoked at least 1 time.
+     */
+    @Test
+    public void testMakeCoffeeWhenRecipeIsNullWithMockObject() {
+        Recipe[] recipes1 = new Recipe[]{recipe1, recipe2, null};
+        when(mockRecipeBook.getRecipes()).thenReturn(recipes1);
+        assertEquals(100, coffeeMaker2.makeCoffee(2, 100));
+        verify(mockRecipeBook, atLeastOnce()).getRecipes();
+    }
+
+    /**
+     * Test Case ID: 48
+     * Given a coffee maker with valid recipes by using mock object
+     * When we make coffee with not enough money for the price,
+     * Then we get the change equal to the money we paid,
+     * and getRecipes() will be invoked at least 1 time.
+     */
+    @Test
+    public void testPurchasedBeverageWithNotEnoughMoneyWithMockObject() {
+        when(mockRecipeBook.getRecipes()).thenReturn(recipes);
+        assertEquals(40, coffeeMaker2.makeCoffee(0, 40));
+        verify(mockRecipeBook, atLeastOnce()).getRecipes();
     }
 }
