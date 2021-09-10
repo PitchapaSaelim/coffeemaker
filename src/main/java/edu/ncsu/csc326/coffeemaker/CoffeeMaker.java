@@ -35,7 +35,8 @@ public class CoffeeMaker {
 
 	/**
 	 * Constructor has parameters for recipeBook and inventory instead of creating them
-	 *
+	 * @param recipeBook
+	 * @param inventory
 	 */
 	public CoffeeMaker(RecipeBook recipeBook, Inventory inventory) {
 		this.recipeBook = recipeBook;
